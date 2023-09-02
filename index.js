@@ -16,6 +16,7 @@ const filePath = path.join(__dirname, './views/home.html');
   res.sendFile(filePath);
 });
 app.get('/translate/:sourceLang/:targetLang/:textToTranslate', translate.translateText)
+app.get('/translateapi/:sourceLang/:targetLang/:textToTranslate', translate.translateTextWithLibreTranslate)
 app.post('/translate', translate.translateTextForm)
 
 app.listen(port, () => {

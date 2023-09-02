@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
+const axios = require('axios')
 
 async function waitFor(time) {
   return new Promise((resolve) => {
@@ -12,7 +13,6 @@ exports.translateText = async function (req, res) {
   console.time('translate'); // Start the timer
 
   let sourceLang, targetLang, sourceString
-  // sourceString = ' how are you doing? can we talk? I really need to tell you something. Do you even think about me?'
   sourceString = req.params.textToTranslate
   sourceLang =  req.params.sourceLang
   targetLang =  req.params.targetLang
@@ -55,18 +55,41 @@ console.log('the source string is: ', req.params)
   
   // await waitFor(1000);
   await browser.close();
+  console.timeEnd('translate'); 
   res.json(translatedResult) 
   // return translatedResult
   }
 
-  console.timeEnd('translate'); 
   
 }
 
 exports.translateTextForm = function(req, res){
-  console.log(req.body)
+  
 
-  res.redirect(`/translate/en/de/${encodeURIComponent(req.body.textToTranslate)}`)
+  res.redirect(`/translate/de/en/${encodeURIComponent(req.body.textToTranslate)}`)
+
+
+}
+
+exports.translateTextWithLibreTranslate = async function (req, res){
+  console.log(req.params)
+
+  // argostranslate, libretranslate are related projects that are open source and can be self hosted, but i used mirror links where they dont require api keys
+  // the rough limit is 288 characters
+  axios.post("https://translate.argosopentech.com/translate", {
+    q: req.params.textToTranslate,
+    source: req.params.sourceLang,
+    target: req.params.targetLang
+}, {
+    headers: { "Content-Type": "application/json" }
+})
+    .then(function (response) {
+      console.log(response.data)
+        res.json(response.data.translatedText);
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
 
 
 }
