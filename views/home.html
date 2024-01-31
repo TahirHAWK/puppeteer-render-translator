@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-   <h2>Type what you want to translate</h2> 
+   <h2>Type what you want to translate.</h2> 
    <form id="form">
     <input type="text" name="textToTranslate" id="textToTranslate" required>
     <input type="submit" value="Submit" id="submit">
@@ -27,6 +27,11 @@ form.addEventListener('submit', function(e){
     submit.disabled = true
     submit.value = 'Loading'
     let textToTranslate = document.getElementById('textToTranslate')
+
+    if(textToTranslate.value.length == 0){
+        textToTranslate.value = 'Hello there man, nice to see you again.'
+    }
+
     axios.post('/translate',{textToTranslate: textToTranslate.value}).then((res)=>{
         console.log(res, textToTranslate.value)
         document.getElementById('translatedText').innerText = res.data

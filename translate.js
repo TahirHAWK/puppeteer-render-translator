@@ -11,12 +11,12 @@ async function waitFor(time) {
 
 exports.translateText = async function (req, res) {
   console.time('translate'); // Start the timer
-
+ 
   let sourceLang, targetLang, sourceString
-  sourceString = req.params.textToTranslate
-  sourceLang =  req.params.sourceLang
-  targetLang =  req.params.targetLang
-console.log('the source string is: ', req.params)
+  sourceString =  req.body.textToTranslate 
+  sourceLang =   'en'  
+  targetLang =  'de'
+console.log('the source string is: ', sourceString)
 // how are you doing? can we talk? I really need to tell you something. Do you even think about me?
   if(sourceString.length > 4999){
     res.json('No can do amigo, string is too long.')
@@ -38,12 +38,12 @@ console.log('the source string is: ', req.params)
 
   // detect the source textarea for input data (source string)
   await page.waitForSelector('.er8xn');
-  // await waitFor(1000);
-
+  await waitFor(1000);
+ 
 
   // wait for the result container to be available
   await page.waitForSelector('.usGWQd');
-  // await waitFor(3000);
+  await waitFor(3000);
 
   // get the translated result string
   let translatedResult = await page.evaluate(() => {

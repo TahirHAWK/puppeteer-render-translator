@@ -17,7 +17,7 @@ const filePath = path.join(__dirname, './views/home.html');
 });
 app.get('/translate/:sourceLang/:targetLang/:textToTranslate', translate.translateText)
 app.get('/translateapi/:sourceLang/:targetLang/:textToTranslate', translate.translateTextWithLibreTranslate)
-app.post('/translate', translate.translateTextForm)
+app.post('/translate', translate.translateText)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
